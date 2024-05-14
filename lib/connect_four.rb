@@ -28,18 +28,25 @@ class Game
     @player2 = Player.new("Player 2", "O")
   end
 
-  current = @player1
-
   def start_game
-    display_welcome_message
-    input = gets.chomp
+    n = 4
+    current = @player1
+
+    puts display_welcome_message
+    input = gets.chomp.to_i
+
+    while input.negative? || input >= 3
+      puts "Choose between 0,1,2,3 only!"
+      input = gets.chomp.to_i
+    end
+
   end
 
   def display_welcome_message
     output = []
     output << "Welcome to Connect Four!"
     output << "Choose which row you want to put your piece!"
-    output << "1   2   3   4"
+    output << "0   1   2   3"
     output << @board.display_board
     output.join("\n")
   end
