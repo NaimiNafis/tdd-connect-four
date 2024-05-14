@@ -12,4 +12,14 @@ describe Board do
   end
 end
 
+describe Game do
+  describe "#start_game" do
+    it "displays the board of n*n" do
+      game = Game.new
+      expected_output = "  |   |   |  \n  |   |   |  \n  |   |   |  \n  |   |   |  "
+      expect(game.start_game).to eql(expected_output)
+    end
+  end
+end
+
   
