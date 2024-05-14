@@ -31,10 +31,17 @@ class Game
   current = @player1
 
   def start_game
-    puts "Welcome to Connect Four!\n"
-    puts "Choose which row you want to put your piece!\n"
-    puts "1   2   3   4"
-    puts @board.display_board
+    display_welcome_message
+    input = gets.chomp
+  end
+
+  def display_welcome_message
+    output = []
+    output << "Welcome to Connect Four!"
+    output << "Choose which row you want to put your piece!"
+    output << "1   2   3   4"
+    output << @board.display_board
+    output.join("\n")
   end
 end
 

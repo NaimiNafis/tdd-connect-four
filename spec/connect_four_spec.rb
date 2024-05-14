@@ -13,10 +13,16 @@ describe Board do
 end
 
 describe Game do
-  describe "#start_game" do
-    it "displays the board of n*n" do
+  describe "#display_welcome_message" do
+    it "displays the board and welcome message" do
       game = Game.new
-      expected_output = "  |   |   |  \n  |   |   |  \n  |   |   |  \n  |   |   |  "
+      expected_output = "Welcome to Connect Four!\n" +
+                        "Choose which row you want to put your piece!\n" +
+                        "1   2   3   4\n" +
+                        "  |   |   |  \n" +
+                        "  |   |   |  \n" +
+                        "  |   |   |  \n" +
+                        "  |   |   |  "
       expect(game.start_game).to eql(expected_output)
     end
   end
