@@ -1,20 +1,24 @@
-#lib/connect_four.rb
-
-# red_circle = "\u{1F534}"
-# blue_circle = "\u{1F535}"
+# lib/connect_four.rb
 
 class Board
-  def initialize(n = 3)
-    @board = Array.new(n) { Array.new(n, " ") }
+  def initialize(rows = 6, cols = 7)
+    @rows = rows
+    @cols = cols
+    @board = Array.new(rows) { Array.new(cols, " ") }
   end
 
   def display_board
-    # Return the string representation of the board instead of puts(direct print to console and return nil)
     @board.map { |row| row.join(' | ') }.join("\n")
+  end
+
+  def full?
+    @board.all? { |row| row.none? { |cell| cell == " " } }
   end
 end
 
 class Player
+  attr_reader :name, :symbol
+
   def initialize(name, symbol)
     @name = name
     @symbol = symbol
@@ -23,30 +27,27 @@ end
 
 class Game
   def initialize
-    @board = Board.new(4)
+    @board = Board.new
     @player1 = Player.new("Player 1", "X")
     @player2 = Player.new("Player 2", "O")
   end
 
   def start_game
-    n = 4
     current = @player1
 
     puts display_welcome_message
     input = gets.chomp.to_i
 
-    while input.negative? || input >= 3
-      puts "Choose between 0,1,2,3 only!"
+    while input.negative? || input >= 7
+      puts "Choose between 0 and 6 only!"
       input = gets.chomp.to_i
     end
-
   end
 
   def display_welcome_message
     output = []
     output << "Welcome to Connect Four!"
-    output << "Choose which row you want to put your piece!"
-    output << "0   1   2   3"
+    output << "Choose a column to put your piece (0-6):"
     output << @board.display_board
     output.join("\n")
   end
@@ -54,4 +55,3 @@ end
 
 game = Game.new
 game.start_game
-
