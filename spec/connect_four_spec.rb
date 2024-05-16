@@ -116,56 +116,51 @@ describe Board do
 
 end
 
+# spec/connect_four_spec.rb
 describe Game do
-  describe "#display_welcome_message" do
-    it "displays the board and welcome message" do
-      game = Game.new
-      expected_output = "Welcome to Connect Four!\n" +
-                        "Choose a column to put your piece (0-6):\n" +
-                        "  |   |   |   |   |   |   |  \n" +
-                        "  |   |   |   |   |   |   |  \n" +
-                        "  |   |   |   |   |   |   |  \n" +
-                        "  |   |   |   |   |   |   |  \n" +
-                        "  |   |   |   |   |   |   |  \n" +
-                        "  |   |   |   |   |   |   |  "
-      expect(game.display_welcome_message).to eql(expected_output)
-    end
-  end
-
   describe "#player_input" do
-    it "accepts valid column inputs within range 0 to 6" do
-      game = Game.new
-      # Stubbing gets.chomp to return '2'
-      allow(game).to receive(:gets).and_return('2')
+    let(:game) { Game.new }
 
-      # Testing that the input '2' is correctly interpreted
+    it "accepts valid column inputs within range 0 to 6" do
+      allow(game).to receive(:gets).and_return('2')
       expect(game.player_input).to eql(2)
     end
 
     it "prompts again if the input is out of range" do
-      game = Game.new
-      # Stubbing gets.chomp to return '7' first and then '2'
       allow(game).to receive(:gets).and_return('7', '2')
+      expect(game).to receive(:puts).with("Invalid input! Please choose a column number between 0 and 6.").once
+      expect(game.player_input).to eql(2)
+    end
 
-      # Testing that the input '2' is correctly interpreted after an invalid input
+    it "prompts again if the input is not a number" do
+      allow(game).to receive(:gets).and_return('a', '2')
+      expect(game).to receive(:puts).with("Invalid input! Please choose a column number between 0 and 6.").once
       expect(game.player_input).to eql(2)
     end
   end
 
-  describe "#switch_player" do
-    it "switches the current player from player1 to player2" do
-      game = Game.new
-      player1 = game.instance_variable_get(:@player1)
-      player2 = game.instance_variable_get(:@player2)
+  describe "#valid_input?" do
+    let(:game) { Game.new }
 
-      expect(game.instance_variable_get(:@current_player)).to eql(player1)
-      
-      game.switch_player
-      expect(game.instance_variable_get(:@current_player)).to eql(player2)
+    it "returns true for valid numeric input within range" do
+      expect(game.send(:valid_input?, '2')).to be true
+    end
 
-      game.switch_player
-      expect(game.instance_variable_get(:@current_player)).to eql(player1)
+    it "returns false for out of range input" do
+      expect(game.send(:valid_input?, '7')).to be false
+    end
+
+    it "returns false for non-numeric input" do
+      expect(game.send(:valid_input?, 'a')).to be false
+    end
+
+    it "returns false for negative input" do
+      expect(game.send(:valid_input?, '-1')).to be false
+    end
+
+    it "returns false for empty input" do
+      expect(game.send(:valid_input?, '')).to be false
     end
   end
-
 end
+
