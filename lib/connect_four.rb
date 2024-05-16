@@ -100,13 +100,21 @@ class Game
   end
 
   def player_input
-    input = gets.chomp.to_i
+    loop do
+      input = gets.chomp
 
-    while input.negative? || input >= @board.board.first.size
-      puts "Choose between 0 and #{@board.board.first.size - 1} only!"
-      input = gets.chomp.to_i
+      if valid_input?(input)
+        return input.to_i
+      else
+        puts "Invalid input! Please choose a column number between 0 and #{@board.board.first.size - 1}."
+      end
     end
-    input
+  end
+
+  private
+
+  def valid_input?(input)
+    input.match?(/^\d+$/) && input.to_i.between?(0, @board.board.first.size - 1)
   end
 
   def switch_player
@@ -114,5 +122,5 @@ class Game
   end
 end
 
-game = Game.new
-game.start_game
+# game = Game.new
+# game.start_game
