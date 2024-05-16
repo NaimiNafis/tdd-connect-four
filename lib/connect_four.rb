@@ -10,7 +10,9 @@ class Board
   end
 
   def display_board
-    @board.map { |row| row.join(' | ') }.join("\n")
+    column_numbers = (0...@cols).to_a.join('   ')
+    board_rows = @board.map { |row| row.join(' | ') }.join("\n")
+    "#{column_numbers}\n#{board_rows}"
   end
 
   def full?

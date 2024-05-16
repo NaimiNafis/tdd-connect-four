@@ -3,9 +3,9 @@ require './lib/connect_four.rb'
 
 describe Board do
   describe "#display_board" do
-    it "displays the board of n*n" do
+    it "displays the board with column numbers" do
       board = Board.new(4, 4)
-      expected_output = "  |   |   |  \n  |   |   |  \n  |   |   |  \n  |   |   |  "
+      expected_output = "0   1   2   3\n  |   |   |  \n  |   |   |  \n  |   |   |  \n  |   |   |  "
       expect(board.display_board).to eql(expected_output)
     end
   end
