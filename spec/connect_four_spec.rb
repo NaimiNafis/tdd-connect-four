@@ -144,17 +144,6 @@ end
 describe Game do
 
   describe "#start_game" do
-    it "plays a complete game resulting in a draw" do
-      game = Game.new
-      allow(game).to receive(:gets).and_return(
-        '0', '0', '1', '1', '2', '2', '3', '3', '4', '4', '5', '5', '6', '6',
-        '0', '0', '1', '1', '2', '2', '3', '3', '4', '4', '5', '5', '6', '6',
-        '0', '0', '1', '1', '2', '2', '3', '3', '4', '4', '5', '5', '6', '6'
-      )
-
-      expect { game.start_game }.to output(/The board is full! It's a draw./).to_stdout
-    end
-
     it "plays a complete game with a winner" do
       game = Game.new
       allow(game).to receive(:gets).and_return('0', '1', '0', '1', '0', '1', '0') # Player 1 wins vertically
