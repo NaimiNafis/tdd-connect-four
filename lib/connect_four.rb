@@ -10,9 +10,9 @@ class Board
   end
 
   def display_board
-    column_numbers = (0...@cols).to_a.join('   ')
+    column_numbers = (1..@cols).to_a.join('   ')
     board_rows = @board.map { |row| row.join(' | ') }.join("\n")
-    "#{column_numbers}\n#{board_rows}"
+    "\n#{column_numbers}\n#{board_rows}"
   end
 
   def full?
@@ -20,6 +20,7 @@ class Board
   end
 
   def place_piece(col, symbol)
+    col = col - 1  # Adjust the column index to be zero-based
     (0...@rows).reverse_each do |row|
       if @board[row][col] == " "
         @board[row][col] = symbol
@@ -64,8 +65,8 @@ class Player
 end
 
 class Game
-  def initialize
-    @board = Board.new
+  def initialize(rows = 6, cols = 7)
+    @board = Board.new(rows, cols)
     @player1 = Player.new("Player 1", "X")
     @player2 = Player.new("Player 2", "O")
     @current_player = @player1
@@ -96,7 +97,7 @@ class Game
   end
 
   def display_welcome_message
-    "Welcome to Connect Four! Choose a column (0-#{@board.board.first.size - 1}) to place your piece.\n#{@board.display_board}"
+    "Welcome to Connect Four! Choose a column (1-#{@board.board.first.size}) to place your piece.\n#{@board.display_board}"
   end
 
   def player_input
@@ -106,7 +107,7 @@ class Game
       if valid_input?(input)
         return input.to_i
       else
-        puts "Invalid input! Please choose a column number between 0 and #{@board.board.first.size - 1}."
+        puts "Invalid input! Please choose a column number between 1 and #{@board.board.first.size}."
       end
     end
   end
@@ -114,7 +115,7 @@ class Game
   private
 
   def valid_input?(input)
-    input.match?(/^\d+$/) && input.to_i.between?(0, @board.board.first.size - 1)
+    input.match?(/^\d+$/) && input.to_i.between?(1, @board.board.first.size)
   end
 
   def switch_player
@@ -122,5 +123,5 @@ class Game
   end
 end
 
-# game = Game.new
-# game.start_game
+game = Game.new
+game.start_game
