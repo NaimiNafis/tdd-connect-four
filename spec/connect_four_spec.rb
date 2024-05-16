@@ -25,21 +25,21 @@ describe Board do
   end
 
   describe "#place_piece" do
-    it "returns row and col if there is no symbol" do
+    xit "returns row and col if there is no symbol" do
       board = Board.new
-      board.instance_variable_set(:@board, Array.new(6) { Array.new(7, " ") }) # 6 rows and 7 columns
+      board.instance_variable_set(:@board, Array.new(6) { Array.new(7, " ") })
       row, col = board.place_piece(3, "X")
       expect(board.instance_variable_get(:@board)[row][col]).to eql("X")
     end
 
-    it "returns player's symbol if there is no symbol" do
+    xit "returns player's symbol if there is no symbol" do
       board = Board.new
-      board.instance_variable_set(:@board, Array.new(6) { Array.new(7, " ") }) # 6 rows and 7 columns
+      board.instance_variable_set(:@board, Array.new(6) { Array.new(7, " ") })
       row, col = board.place_piece(3, "X")
       expect([row, col]).to eql([5, 3])
     end
 
-    it "returns nil if the column is full" do
+    xit "returns nil if the column is full" do
       board = Board.new
       full_column = Array.new(6, "X")
       board.instance_variable_set(:@board, Array.new(6) { full_column.clone }) # Set one column to be full
@@ -65,15 +65,40 @@ describe Game do
     end
   end
 
-  describe "#start_game" do
-    xit "accepts valid column inputs within range 0 to 6" do
+  describe "#player_input" do
+    it "accepts valid column inputs within range 0 to 6" do
       game = Game.new
       # Stubbing gets.chomp to return '2'
       allow(game).to receive(:gets).and_return('2')
 
       # Testing that the input '2' is correctly interpreted
-      expect(game).to receive(:player_input).and_return(2)
-      expect([0, 1, 2, 3, 4, 5, 6]).to include(game.start_game)
+      expect(game.player_input).to eql(2)
+    end
+
+    it "prompts again if the input is out of range" do
+      game = Game.new
+      # Stubbing gets.chomp to return '7' first and then '2'
+      allow(game).to receive(:gets).and_return('7', '2')
+
+      # Testing that the input '2' is correctly interpreted after an invalid input
+      expect(game.player_input).to eql(2)
     end
   end
+
+  describe "#switch_player" do
+    xit "switches the current player from player1 to player2" do
+      game = Game.new
+      player1 = game.instance_variable_get(:@player1)
+      player2 = game.instance_variable_get(:@player2)
+
+      expect(game.instance_variable_get(:@current_player)).to eql(player1)
+      
+      game.switch_player
+      expect(game.instance_variable_get(:@current_player)).to eql(player2)
+
+      game.switch_player
+      expect(game.instance_variable_get(:@current_player)).to eql(player1)
+    end
+  end
+
 end

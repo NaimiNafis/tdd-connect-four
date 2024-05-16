@@ -42,16 +42,26 @@ class Game
     @board = Board.new
     @player1 = Player.new("Player 1", "X")
     @player2 = Player.new("Player 2", "O")
+    @current_player = @player1
   end
 
   def start_game
     
     puts display_welcome_message
-    input = gets.chomp.to_i
 
-    while input.negative? || input >= 7
-      puts "Choose between 0 and 6 only!"
-      input = gets.chomp.to_i
+    until @board.full?
+      col = player_input
+      row, col = @board.place_piece(col, @current_player.symbol)
+      if row.nil?
+        puts "Column full! Choose another one."
+        next
+      end
+
+      puts @board.display_board
+
+      # Check winning moves, if currplayer win, congrats them
+
+      switch_player
     end
   end
 
@@ -62,7 +72,18 @@ class Game
     output << @board.display_board
     output.join("\n")
   end
-end
 
-game = Game.new
-game.start_game
+  def player_input
+    input = gets.chomp.to_i
+
+    while input.negative? || input >= @board.board.first.size - 1
+      puts "Choose between 0 and 6 only!"
+      input = gets.chomp.to_i
+    end
+    input
+  end
+
+  def switch_player
+    @current_player = @current_player == @player1 ? @player2 : @player1
+  end
+end
