@@ -92,11 +92,7 @@ class Game
   end
 
   def display_welcome_message
-    output = []
-    output << "Welcome to Connect Four!"
-    output << "Choose a column to put your piece (0-6):"
-    output << @board.display_board
-    output.join("\n")
+    "Welcome to Connect Four! Choose a column (0-#{@board.board.first.size}) to place your piece.\n#{@board.display_board}"
   end
 
   def player_input
@@ -114,5 +110,5 @@ class Game
   end
 end
 
-game = Game.new
-game.start_game
+# game = Game.new
+# game.start_game

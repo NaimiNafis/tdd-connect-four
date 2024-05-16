@@ -3,7 +3,7 @@ require './lib/connect_four.rb'
 
 describe Board do
   describe "#display_board" do
-    xit "displays the board of n*n" do
+    it "displays the board of n*n" do
       board = Board.new(4, 4)
       expected_output = "  |   |   |  \n  |   |   |  \n  |   |   |  \n  |   |   |  "
       expect(board.display_board).to eql(expected_output)
@@ -11,13 +11,13 @@ describe Board do
   end
 
   describe "#full?" do
-    xit "returns true if board is full" do
+    it "returns true if board is full" do
       board = Board.new(4, 4)
       board.instance_variable_set(:@board, Array.new(4) { Array.new(4, "O") })
       expect(board.full?).to eql(true)
     end
 
-    xit "returns false if board is not full" do
+    it "returns false if board is not full" do
       board = Board.new(4, 4)
       board.instance_variable_set(:@board, Array.new(4) { Array.new(4, " ") })
       expect(board.full?).to eql(false)
@@ -25,21 +25,21 @@ describe Board do
   end
 
   describe "#place_piece" do
-    xit "returns row and col if there is no symbol" do
+    it "returns row and col if there is no symbol" do
       board = Board.new
       board.instance_variable_set(:@board, Array.new(6) { Array.new(7, " ") })
       row, col = board.place_piece(3, "X")
       expect(board.instance_variable_get(:@board)[row][col]).to eql("X")
     end
 
-    xit "returns player's symbol if there is no symbol" do
+    it "returns player's symbol if there is no symbol" do
       board = Board.new
       board.instance_variable_set(:@board, Array.new(6) { Array.new(7, " ") })
       row, col = board.place_piece(3, "X")
       expect([row, col]).to eql([5, 3])
     end
 
-    xit "returns nil if the column is full" do
+    it "returns nil if the column is full" do
       board = Board.new
       full_column = Array.new(6, "X")
       board.instance_variable_set(:@board, Array.new(6) { full_column.clone }) # Set one column to be full
@@ -118,7 +118,7 @@ end
 
 describe Game do
   describe "#display_welcome_message" do
-    xit "displays the board and welcome message" do
+    it "displays the board and welcome message" do
       game = Game.new
       expected_output = "Welcome to Connect Four!\n" +
                         "Choose a column to put your piece (0-6):\n" +
@@ -133,7 +133,7 @@ describe Game do
   end
 
   describe "#player_input" do
-    xit "accepts valid column inputs within range 0 to 6" do
+    it "accepts valid column inputs within range 0 to 6" do
       game = Game.new
       # Stubbing gets.chomp to return '2'
       allow(game).to receive(:gets).and_return('2')
@@ -142,7 +142,7 @@ describe Game do
       expect(game.player_input).to eql(2)
     end
 
-    xit "prompts again if the input is out of range" do
+    it "prompts again if the input is out of range" do
       game = Game.new
       # Stubbing gets.chomp to return '7' first and then '2'
       allow(game).to receive(:gets).and_return('7', '2')
@@ -153,7 +153,7 @@ describe Game do
   end
 
   describe "#switch_player" do
-    xit "switches the current player from player1 to player2" do
+    it "switches the current player from player1 to player2" do
       game = Game.new
       player1 = game.instance_variable_get(:@player1)
       player2 = game.instance_variable_get(:@player2)
