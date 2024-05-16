@@ -26,6 +26,30 @@ class Board
     end
     nil
   end
+
+  def check_winner(symbol)
+    (0...@rows).each do |row|
+      (0...@cols).each do |col|
+        return true if check_direction(row, col, 1, 0, symbol) || # Horizontal
+                       check_direction(row, col, 0, 1, symbol) || # Vertical
+                       check_direction(row, col, 1, 1, symbol) || # Diagonal \
+                       check_direction(row, col, 1, -1, symbol)   # Diagonal /
+      end
+    end
+    false
+  end
+
+  private 
+  
+  def check_direction(row, col, row_step, col_step, symbol)
+    4.times do
+      return false if row < 0 || row >= @rows || col < 0 || col >= @cols
+      return false if @board[row][col] != symbol
+      row += row_step
+      col += col_step
+    end
+    true
+  end
 end
 
 class Player
@@ -59,7 +83,9 @@ class Game
 
       puts @board.display_board
 
-      # Check winning moves, if currplayer win, congrats them
+     if check_winner(@current_player.symbol) == true
+        puts "Congratulations! #{current_player} wins!"
+     end 
 
       switch_player
     end
