@@ -83,8 +83,8 @@ class Game
 
       puts @board.display_board
 
-     if check_winner(@current_player.symbol) == true
-        puts "Congratulations! #{current_player} wins!"
+     if @board.check_winner(@current_player.symbol) == true
+        puts "Congratulations! #{@current_player.name} wins!"
      end 
 
       switch_player
@@ -102,7 +102,7 @@ class Game
   def player_input
     input = gets.chomp.to_i
 
-    while input.negative? || input >= @board.board.first.size - 1
+    while input.negative? || input >= @board.board.first.size
       puts "Choose between 0 and 6 only!"
       input = gets.chomp.to_i
     end
@@ -113,3 +113,6 @@ class Game
     @current_player = @current_player == @player1 ? @player2 : @player1
   end
 end
+
+game = Game.new
+game.start_game
