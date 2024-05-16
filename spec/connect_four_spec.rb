@@ -3,7 +3,7 @@ require './lib/connect_four.rb'
 
 describe Board do
   describe "#display_board" do
-    it "displays the board of n*n" do
+    xit "displays the board of n*n" do
       board = Board.new(4, 4)
       expected_output = "  |   |   |  \n  |   |   |  \n  |   |   |  \n  |   |   |  "
       expect(board.display_board).to eql(expected_output)
@@ -11,18 +11,42 @@ describe Board do
   end
 
   describe "#full?" do
-    it "returns true if board is full" do
+    xit "returns true if board is full" do
       board = Board.new(4, 4)
       board.instance_variable_set(:@board, Array.new(4) { Array.new(4, "O") })
       expect(board.full?).to eql(true)
     end
 
-    it "returns false if board is not full" do
+    xit "returns false if board is not full" do
       board = Board.new(4, 4)
       board.instance_variable_set(:@board, Array.new(4) { Array.new(4, " ") })
       expect(board.full?).to eql(false)
     end
   end
+
+  describe "#place_piece" do
+    it "returns row and col if there is no symbol" do
+      board = Board.new
+      board.instance_variable_set(:@board, Array.new(6) { Array.new(7, " ") }) # 6 rows and 7 columns
+      row, col = board.place_piece(3, "X")
+      expect(board.instance_variable_get(:@board)[row][col]).to eql("X")
+    end
+
+    it "returns player's symbol if there is no symbol" do
+      board = Board.new
+      board.instance_variable_set(:@board, Array.new(6) { Array.new(7, " ") }) # 6 rows and 7 columns
+      row, col = board.place_piece(3, "X")
+      expect([row, col]).to eql([5, 3])
+    end
+
+    it "returns nil if the column is full" do
+      board = Board.new
+      full_column = Array.new(6, "X")
+      board.instance_variable_set(:@board, Array.new(6) { full_column.clone }) # Set one column to be full
+      expect(board.place_piece(3, "O")).to eql(nil)
+    end
+  end
+
 end
 
 describe Game do

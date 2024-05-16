@@ -1,6 +1,8 @@
 # lib/connect_four.rb
 
 class Board
+  attr_reader :board
+
   def initialize(rows = 6, cols = 7)
     @rows = rows
     @cols = cols
@@ -13,6 +15,16 @@ class Board
 
   def full?
     @board.all? { |row| row.none? { |cell| cell == " " } }
+  end
+
+  def place_piece(col, symbol)
+    (0...@rows).reverse_each do |row|
+      if @board[row][col] == " "
+        @board[row][col] = symbol
+        return row, col
+      end
+    end
+    nil
   end
 end
 
@@ -33,8 +45,7 @@ class Game
   end
 
   def start_game
-    current = @player1
-
+    
     puts display_welcome_message
     input = gets.chomp.to_i
 
