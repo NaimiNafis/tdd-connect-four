@@ -72,7 +72,6 @@ class Game
   end
 
   def start_game
-    
     puts display_welcome_message
 
     until @board.full?
@@ -85,23 +84,26 @@ class Game
 
       puts @board.display_board
 
-     if @board.check_winner(@current_player.symbol) == true
+      if @board.check_winner(@current_player.symbol)
         puts "Congratulations! #{@current_player.name} wins!"
-     end 
+        return
+      end
 
       switch_player
     end
+
+    puts "The board is full! It's a draw."
   end
 
   def display_welcome_message
-    "Welcome to Connect Four! Choose a column (0-#{@board.board.first.size}) to place your piece.\n#{@board.display_board}"
+    "Welcome to Connect Four! Choose a column (0-#{@board.board.first.size - 1}) to place your piece.\n#{@board.display_board}"
   end
 
   def player_input
     input = gets.chomp.to_i
 
     while input.negative? || input >= @board.board.first.size
-      puts "Choose between 0 and 6 only!"
+      puts "Choose between 0 and #{@board.board.first.size - 1} only!"
       input = gets.chomp.to_i
     end
     input
@@ -112,5 +114,5 @@ class Game
   end
 end
 
-# game = Game.new
-# game.start_game
+game = Game.new
+game.start_game
