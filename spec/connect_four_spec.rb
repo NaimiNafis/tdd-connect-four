@@ -8,6 +8,15 @@ describe Board do
       expected_output = "0   1   2   3\n  |   |   |  \n  |   |   |  \n  |   |   |  \n  |   |   |  "
       expect(board.display_board).to eql(expected_output)
     end
+
+    it "displays the board with pieces correctly" do
+      board = Board.new(4, 4)
+      board.place_piece(0, 'X')
+      board.place_piece(1, 'O')
+      board.place_piece(2, 'X')
+      expected_output = "0   1   2   3\n  |   |   |  \n  |   |   |  \n  |   |   |  \nX | O | X |  "
+      expect(board.display_board).to eql(expected_output)
+    end
   end
 
   describe "#full?" do
@@ -112,12 +121,48 @@ describe Board do
         expect(board.check_winner('X')).to be false
       end
     end
+
+    it "returns false on an empty board" do
+      board = Board.new
+      expect(board.check_winner('X')).to be false
+      expect(board.check_winner('O')).to be false
+    end
+
+    it "returns false on a partially filled board with no winner" do
+      board = Board.new
+      board.place_piece(0, 'X')
+      board.place_piece(1, 'O')
+      board.place_piece(2, 'X')
+      expect(board.check_winner('X')).to be false
+      expect(board.check_winner('O')).to be false
+    end
   end
 
 end
 
 # spec/connect_four_spec.rb
 describe Game do
+
+  describe "#start_game" do
+    it "plays a complete game resulting in a draw" do
+      game = Game.new
+      allow(game).to receive(:gets).and_return(
+        '0', '0', '1', '1', '2', '2', '3', '3', '4', '4', '5', '5', '6', '6',
+        '0', '0', '1', '1', '2', '2', '3', '3', '4', '4', '5', '5', '6', '6',
+        '0', '0', '1', '1', '2', '2', '3', '3', '4', '4', '5', '5', '6', '6'
+      )
+
+      expect { game.start_game }.to output(/The board is full! It's a draw./).to_stdout
+    end
+
+    it "plays a complete game with a winner" do
+      game = Game.new
+      allow(game).to receive(:gets).and_return('0', '1', '0', '1', '0', '1', '0') # Player 1 wins vertically
+
+      expect { game.start_game }.to output(/Congratulations! Player 1 wins!/).to_stdout
+    end
+  end
+
   describe "#player_input" do
     let(:game) { Game.new }
 
@@ -160,6 +205,22 @@ describe Game do
 
     it "returns false for empty input" do
       expect(game.send(:valid_input?, '')).to be false
+    end
+  end
+
+  describe "#switch_player" do
+    it "switches the current player" do
+      game = Game.new
+      player1 = game.instance_variable_get(:@player1)
+      player2 = game.instance_variable_get(:@player2)
+
+      expect(game.instance_variable_get(:@current_player)).to eql(player1)
+
+      game.send(:switch_player)
+      expect(game.instance_variable_get(:@current_player)).to eql(player2)
+
+      game.send(:switch_player)
+      expect(game.instance_variable_get(:@current_player)).to eql(player1)
     end
   end
 end
